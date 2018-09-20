@@ -1,4 +1,5 @@
 %{
+  /* count number of chars and lines. */
   int num_lines = 0;
   int num_chars = 0;
 %}
