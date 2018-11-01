@@ -13,3 +13,4 @@ setup.data
 setup.log
 LR/Makefile
 LR/README.txt
+lex.yy.c
