@@ -1,0 +1,37 @@
+OASISFormat: 0.4
+Name:        LRsample1
+Version:     0.1
+Synopsis:    LR parsing sample program #1
+Authors:     Hyunha Kim
+License:     LGPL-2.1 with OCaml linking exception
+Plugins:     META (0.4), StdFiles (0.4), DevFiles (0.4)
+
+BuildTools   : ocamlbuild
+BuildDepends :
+  menhirLib, unix
+
+Executable "Main"
+  Path: src
+  BuildDepends : mode_s, mode_ss, mode_ast
+  MainIs: main.ml
+
+Library "S"
+  BuildDepends : menhirLib, unix
+  FindLibName : mode_s
+  Path        : src/s
+  Modules     :
+    Lexer_s, Parser_s
+
+Library "SS"
+  BuildDepends : menhirLib, unix
+  FindLibName : mode_ss
+  Path        : src/ss
+  Modules     :
+    Lexer_ss, Parser_ss
+
+Library "AST"
+  BuildDepends : menhirLib, unix
+  FindLibName : mode_ast
+  Path        : src/ast
+  Modules     :
+    Lexer_ast, Parser_ast

@@ -1,0 +1,15 @@
+*.mldylib
+*.mllib
+META
+_build
+_tags
+LR/AUTHORS.txt
+LR/configure
+LR/INSTALL.txt
+myocamlbuild.ml
+*.out
+setup.ml
+setup.data
+setup.log
+LR/Makefile
+LR/README.txt
