@@ -5,7 +5,6 @@
 }
 
 let ignore = [' ' '\n' '\t']
-let eol = '\n'
 
 rule token = parse
   | ignore    { token lexbuf }

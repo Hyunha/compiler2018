@@ -3,9 +3,11 @@
 %}
 
 %token EOF
-%token SEMI EQ PRINT PLUS
+%token SEMI EQ PRINT PLUS MINUS
 %token<string> VAR
 %token<int> NUM
+
+%left SEMI PLUS MINUS
 
 %type<Ast.program> p
 %start p
@@ -23,6 +25,7 @@ s:
 
 e:
   | e PLUS e  { Plus ($1, $3) }
+  | e MINUS e { Minus ($1, $3) }
   | VAR       { Var $1 }
   | NUM       { Num $1 }
   ;

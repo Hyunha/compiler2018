@@ -11,6 +11,7 @@ type s =
   | Print of e
 and e =
   | Plus of e * e
+  | Minus of e * e
   | Var of var
   | Num of int
 and program = s
@@ -29,6 +30,8 @@ and print_e fmt e =
   match e with
   | Plus (e1, e2) ->
     fpf fmt "%a + %a" print_e e1 print_e e2
+  | Minus (e1, e2) ->
+    fpf fmt "%a - %a" print_e e1 print_e e2
   | Var var -> 
     fpf fmt "%s" var
   | Num n ->
@@ -51,6 +54,8 @@ and eval_e env e =
   match e with
   | Plus (e1, e2) ->
     (eval_e env e1) + (eval_e env e2)
+  | Minus (e1, e2) ->
+    (eval_e env e1) - (eval_e env e2)
   | Var var -> 
     Env.find var env
   | Num n ->
