@@ -7,7 +7,9 @@ grammar Rendering;
 /*
  * Parser.
  */
-document : (block NEWLINE)* ;
+document : blocks ;
+
+blocks : (block NEWLINE)* ;
 
 block : SHARPs TEXT   # SHARP
       | STARs TEXT    # STAR

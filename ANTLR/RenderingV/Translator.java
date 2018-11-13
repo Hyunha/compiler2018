@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-public class Rendering {
+public class Translator {
   public static void main( String[] args) throws Exception {
     File file = new File(args[0]);
     FileInputStream fis = null;
@@ -18,9 +18,8 @@ public class Rendering {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         RenderingParser parser = new RenderingParser(tokens);
         ParseTree tree = parser.document();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        RenderingSyntaxListener renderer = new RenderingSyntaxListener(parser);
-        walker.walk(renderer, tree);
+        TranslatorVisitor translator = new TranslatorVisitor();
+        translator.visit(tree);
     } catch (IOException e) {
         e.printStackTrace();
     } finally {
