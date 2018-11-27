@@ -1,0 +1,8 @@
+x : int;
+z : int;
+x = (1+2)*3;
+z = 0;
+if z > 0 then
+  print x;
+if z + 1 > 0 then
+  print x + 2
