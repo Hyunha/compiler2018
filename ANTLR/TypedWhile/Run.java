@@ -18,6 +18,10 @@ public class Run {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         WhileParser parser = new WhileParser(tokens);
         ParseTree tree = parser.prog();
+        TypeCheckingVisitor type_chk = new TypeCheckingVisitor();
+        System.out.println("type checking...");
+        type_chk.visit(tree);
+        System.out.println("type checking finished");
         ExecVisitor exec = new ExecVisitor();
         exec.visit(tree);
     } catch (IOException e) {

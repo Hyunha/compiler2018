@@ -16,6 +16,11 @@ public class Env {
   }
 
   public static int lookup(String var) {
-    return m.get(var);
+    if (m.containsKey(var))
+      return m.get(var);
+    else {
+      System.out.println("undefined or uninitialized var : " + var);
+      return 0;
+    }
   }
 }
