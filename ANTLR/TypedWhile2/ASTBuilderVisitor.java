@@ -4,10 +4,13 @@ import javafx.util.*;
 
 public class ASTBuilderVisitor extends WhileBaseVisitor<Node> {
 
+  TypeEnv te;
+
   @Override public Node visitProg(WhileParser.ProgContext ctx) {
-    return new AstWithEval(
-      (Declaration)visit(ctx.var_decls()), 
-      (Statement)visit(ctx.stmts()));
+    Declaration d = (Declaration)visit(ctx.var_decls());
+    te = d.execute(new TypeEnv());
+    Statement s = (Statement)visit(ctx.stmts());
+    return new AstWithEval(d, s);
   }
 
   @Override public Node visitVarDecs(WhileParser.VarDecsContext ctx) {
@@ -59,7 +62,9 @@ public class ASTBuilderVisitor extends WhileBaseVisitor<Node> {
   }
 
   @Override public Node visitAssign(WhileParser.AssignContext ctx) {
-    Variable v = new Variable(ctx.ID().getText());
+    String name = ctx.ID().getText();
+    Type t = te.lookup(name);
+    Variable v = new Variable(name, t);
     Expression e = (Expression)visit(ctx.expr());
     return new Assign(v, e);
   }
@@ -77,6 +82,10 @@ public class ASTBuilderVisitor extends WhileBaseVisitor<Node> {
     return new Print(e);
   }
 
+  @Override public Node visitSkip(WhileParser.SkipContext ctx) {
+    return new Skip();
+  }
+
   @Override public Node visitIf(WhileParser.IfContext ctx) {
     Bexp cond = (Bexp)visit(ctx.bexp());
     Statement s = (Statement)visit(ctx.stmt());
@@ -84,8 +93,10 @@ public class ASTBuilderVisitor extends WhileBaseVisitor<Node> {
   }
 
   @Override public Node visitAE_Var(WhileParser.AE_VarContext ctx) {
-    String id = ctx.ID().getText();
-    return new AEid(new Variable(id));
+    String name = ctx.ID().getText();
+    Type t = te.lookup(name);
+    Variable v = new Variable(name, t);
+    return new AEid(v);
   }
 
   @Override public Node visitAE_Parens(WhileParser.AE_ParensContext ctx) {
@@ -134,8 +145,10 @@ public class ASTBuilderVisitor extends WhileBaseVisitor<Node> {
   }
 
   @Override public Node visitBE_Var(WhileParser.BE_VarContext ctx) {
-    String id = ctx.ID().getText();
-    return new BEid(new Variable(id));
+    String name = ctx.ID().getText();
+    Type t = te.lookup(name);
+    Variable v = new Variable(name, t);
+    return new BEid(v);
   }
 
   @Override public Node visitROP_GT(WhileParser.ROP_GTContext ctx) {

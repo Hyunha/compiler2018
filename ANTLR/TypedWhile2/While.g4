@@ -26,6 +26,7 @@ stmt
   : ID '=' expr              # Assign
   | 'print' aexp             # Print
   | 'if' bexp 'then' stmt    # If
+  | 'skip'                   # Skip
   ;
 
 expr

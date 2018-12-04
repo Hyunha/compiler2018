@@ -18,6 +18,11 @@ class BoolValue extends Value {
     this.v = v;
   }
 
+  BoolValue negation() {
+    this.v = !this.v;
+    return this;
+  }
+
   public String toString() {
     return ""+v;
   }

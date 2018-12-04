@@ -4,8 +4,14 @@ z : int;
 x = (1+2)*3;
 z = 0;
 y = z > 0;
+if !false then
+  if !y then
+    if 3 + 2 < 2 then
+      x = x + 1;
+if 3 < 1 then
+  print y;
 if y then
-  print x;
+  y = ! y;
 y = z + 1 > 0;
 if y then
   print x + 2

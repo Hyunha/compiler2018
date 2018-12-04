@@ -1,8 +1,19 @@
 import java.util.*;
 
+class Util {
+  static String tab = "  ";
+
+  static void print_tab(int size) {
+    for(int i = 0; i < size; i++) {
+      System.out.print(tab);
+    }
+  }
+}
+
 public class AstWithEval extends Node {
   Declaration d;
   Statement s;
+
   AstWithEval(Declaration d, Statement s) {
     this.d = d; this.s = s;
   }
@@ -15,6 +26,13 @@ public class AstWithEval extends Node {
 
   public String toString() {
     return d.toString() + ";\n" + s.toString();
+  }
+
+  void print() {
+    System.out.println("- print code ----------------------------------");
+    System.out.println(d.toString() + ";");
+    s.print(0);
+    System.out.println("\n-----------------------------------------------");
   }
 }
 
@@ -97,6 +115,11 @@ class Statement extends Node {
   Env execute(Env env) {
     return env;
   }
+
+  void print(int tab) {
+    Util.print_tab(tab);
+    System.out.print(this.toString());
+  }
 };
 
 class Stmts extends Statement {
@@ -130,6 +153,18 @@ class Stmts extends Statement {
     }
     return s;
   }
+
+  void print(int tab) {
+    boolean fst = true;
+    for (Statement s : ss) {
+      if (fst) {
+        fst = false;
+      } else {
+        System.out.println(";");
+      }
+      s.print(tab);
+    }
+  }
 }
 
 class Assign extends Statement {
@@ -162,6 +197,16 @@ class Print extends Statement {
   }
 }
 
+class Skip extends Statement {
+  public String toString() {
+    return "skip";
+  }
+
+  Env execute(Env env) {
+    return env;
+  }
+}
+
 class If extends Statement {
   /*if*/ Expression e; /*then*/ Statement s;
   If(Expression e, Statement s) {
@@ -185,6 +230,12 @@ class If extends Statement {
   public String toString() {
     return "if (" + e.toString() + ") then\n" +
       s.toString();
+  }
+
+  void print(int tab) {
+    Util.print_tab(tab);
+    System.out.println("if (" + e + ") then");
+    s.print(tab + 1);
   }
 }
 
@@ -331,8 +382,12 @@ class BEnot extends Bexp {
   BEnot(Bexp b) { this.b = b; }
 
   Value eval(Env env) {
-    BoolValue b = (BoolValue)(this.b.eval(env));
-    return new BoolValue(!b.v);
+    Value v = this.b.eval(env);
+    if (v instanceof BoolValue) {
+      return ((BoolValue)v).negation();
+    } else {
+      return new NullValue();
+    }
   }
 
   public String toString() {

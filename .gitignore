@@ -43,3 +43,7 @@ ANTLR/TypedWhile/WhileBaseVisitor.java
 ANTLR/TypedWhile/WhileLexer.java
 ANTLR/TypedWhile/WhileParser.java
 ANTLR/TypedWhile/WhileVisitor.java
+ANTLR/TypedWhile2/WhileBaseVisitor.java
+ANTLR/TypedWhile2/WhileLexer.java
+ANTLR/TypedWhile2/WhileParser.java
+ANTLR/TypedWhile2/WhileVisitor.java

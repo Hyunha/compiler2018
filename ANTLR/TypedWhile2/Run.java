@@ -21,7 +21,13 @@ public class Run {
 
         ASTBuilderVisitor builder = new ASTBuilderVisitor();
         AstWithEval ast = (AstWithEval)builder.visit(tree);
-        System.out.println(ast);
+        ast.print();
+        System.out.println("excuting ...");
+        ast.execute();
+        System.out.println("optimization ...");
+        Optimizer opt = new Optimizer();
+        ast = opt.run(ast);
+        ast.print();
         System.out.println("excuting ...");
         ast.execute();
         // TypeCheckingVisitor type_chk = new TypeCheckingVisitor();
