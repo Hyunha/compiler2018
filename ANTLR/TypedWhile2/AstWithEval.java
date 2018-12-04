@@ -211,7 +211,7 @@ class AEop extends Aexp {
         return new IntValue(((IntValue)v1).v - ((IntValue)v2).v);
       } else if (this.op instanceof AopMULT) {
         return new IntValue(((IntValue)v1).v * ((IntValue)v2).v);
-      } else if (this.op instanceof AopPLUS) {
+      } else if (this.op instanceof AopDIV) {
         return new IntValue(((IntValue)v1).v / ((IntValue)v2).v);
       } else {
         return new NullValue();

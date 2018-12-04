@@ -18,6 +18,7 @@ public class Run {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         WhileParser parser = new WhileParser(tokens);
         ParseTree tree = parser.prog();
+
         ASTBuilderVisitor builder = new ASTBuilderVisitor();
         AstWithEval ast = (AstWithEval)builder.visit(tree);
         System.out.println(ast);
