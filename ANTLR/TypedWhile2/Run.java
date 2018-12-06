@@ -11,6 +11,26 @@ public class Run {
   public static void main( String[] args) throws Exception {
     File file = new File(args[0]);
     FileInputStream fis = null;
+    for (String option : args) {
+        if (option.equals("-ce")) {
+            Optimizer.opt_ce = true;
+        }
+        if (option.equals("-eb")) {
+            Optimizer.opt_eb = true;
+        }
+        if (option.equals("-rs")) {
+            Optimizer.opt_rs = true;
+        }
+        if (option.equals("-cf")) {
+            Optimizer.opt_cf = true;
+        }
+        if (option.equals("-optAll")) {
+            Optimizer.opt_ce = true;
+            Optimizer.opt_eb = true;
+            Optimizer.opt_rs = true;
+            Optimizer.opt_cf = true;
+        }
+    }
     try {
         fis = new FileInputStream(file);
         CharStream inp = CharStreams.fromStream(fis);

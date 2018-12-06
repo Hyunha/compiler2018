@@ -1,15 +1,5 @@
 import java.util.*;
 
-class Util {
-  static String tab = "  ";
-
-  static void print_tab(int size) {
-    for(int i = 0; i < size; i++) {
-      System.out.print(tab);
-    }
-  }
-}
-
 public class AstWithEval extends Node {
   Declaration d;
   Statement s;
@@ -284,6 +274,23 @@ class While extends Statement {
 class Expression extends Node {
   Value eval(Env env) {
     return new NullValue();
+  }
+
+  Expression fromValue(Value v) {
+    if (v instanceof IntValue) {
+      Expression e = new AEint(((IntValue)v).v);
+      return e;
+    } else if (v instanceof BoolValue) {
+      if (((BoolValue)v).v) {
+        Expression e = new BEtrue();
+        return e;
+      } else {
+        Expression e = new BEfalse();
+        return e;
+      }
+    } else {
+      return this;
+    }
   }
 };
 

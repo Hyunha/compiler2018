@@ -1,14 +1,24 @@
 class Optimizer {
   static boolean changed = false;
 
+  static boolean opt_ce = false;
+  static boolean opt_eb = false;
+  static boolean opt_rs = false;
+  static boolean opt_cf = false;
+
   AstWithEval run(AstWithEval ast) {
     DeadCode dc = new DeadCode();
     Simplifier smp = new Simplifier();
     do {
       changed = false;
-      ast = dc.simpleCondElimination(ast);
-      ast = smp.remove_empty_blocks(ast);
-      ast = smp.remove_skip(ast);
+      if (opt_ce)
+        ast = dc.simpleCondElimination(ast);
+      if (opt_eb)
+        ast = smp.remove_empty_blocks(ast);
+      if (opt_rs)
+        ast = smp.remove_skip(ast);
+      if (opt_cf)
+        ast = smp.constant_folding(ast);
     } while(changed);
     return ast;
   }
@@ -23,7 +33,36 @@ class Optimizer {
     }
 
     Statement constant_folding_Stmt(Statement s) {
-      return s;
+      if (s instanceof Stmts) {
+        Stmts block = new Stmts();
+        for (Statement si : ((Stmts)s).ss) {
+          block.append(constant_folding_Stmt(si));
+        }
+        return block;
+      } else if (s instanceof Print) {
+        Expression e = ((Print)s).e;
+        Value v = e.eval(new Env());
+        return new Print(e.fromValue(v));
+      } else if (s instanceof If) {
+        Bexp cond = (Bexp)(((If)s).e);
+        Statement body = ((If)s).s;
+        Value v = cond.eval(new Env());
+        body = constant_folding_Stmt(body);
+        return new If(cond.fromValue(v), body);
+      } else if (s instanceof While) {
+        Bexp cond = (Bexp)(((While)s).e);
+        Statement body = ((While)s).s;
+        Value v = cond.eval(new Env());
+        body = constant_folding_Stmt(body);
+        return new While(cond.fromValue(v), body);
+      } else if (s instanceof Assign) {
+        Variable lhs = ((Assign)s).lhs;
+        Expression rhs = ((Assign)s).rhs;
+        Value v = rhs.eval(new Env());
+        return new Assign(lhs, rhs.fromValue(v));
+      } else {
+        return s;
+      }
     }
 
     Expression constant_folding_E(Expression e) {
