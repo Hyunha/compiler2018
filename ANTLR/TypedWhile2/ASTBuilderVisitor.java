@@ -92,6 +92,12 @@ public class ASTBuilderVisitor extends WhileBaseVisitor<Node> {
     return new If(cond, s);
   }
 
+  @Override public Node visitWhile(WhileParser.WhileContext ctx) {
+    Bexp cond = (Bexp)visit(ctx.bexp());
+    Statement s = (Statement)visit(ctx.stmts());
+    return new While(cond, s);
+  }
+
   @Override public Node visitAE_Var(WhileParser.AE_VarContext ctx) {
     String name = ctx.ID().getText();
     Type t = te.lookup(name);

@@ -38,6 +38,11 @@ class Optimizer {
         Statement body = ((If)s).s;
         body = remove_empty_blocks_Stmt(body);
         return new If(cond, body);
+      } else if (s instanceof While) {
+        Bexp cond = (Bexp)(((While)s).e);
+        Statement body = ((While)s).s;
+        body = remove_empty_blocks_Stmt(body);
+        return new While(cond, body);
       } else {
         return s;
       }
@@ -73,6 +78,11 @@ class Optimizer {
         } else {
           return new If(cond, body);
         }
+      } else if (s instanceof While) {
+        Bexp cond = (Bexp)(((While)s).e);
+        Statement body = ((While)s).s;
+        body = remove_skip_Stmt(body);
+        return new While(cond, body);
       } else {
         return s;
       }
@@ -107,6 +117,22 @@ class Optimizer {
         } else {
           body = simpleCE_Stmt(body);
           return new If(cond, body);
+        }
+      } else if (s instanceof While) {
+        Bexp cond = (Bexp)(((While)s).e);
+        Statement body = ((While)s).s;
+        Value v = cond.eval(new Env());
+        if (v instanceof BoolValue) {
+          if (((BoolValue)v).v) {
+            body = simpleCE_Stmt(body);
+            return new While(cond, body);
+          } else {
+            changed = true;
+            return new Skip();
+          }
+        } else {
+          body = simpleCE_Stmt(body);
+          return new While(cond, body);
         }
       } else {
         return s;

@@ -239,6 +239,48 @@ class If extends Statement {
   }
 }
 
+class While extends Statement {
+  /*while*/ Expression e; /*do*/ Statement s /*od*/;
+  While(Expression e, Statement s) {
+    this.e = e; this.s = s;
+  }
+
+  // [[While(e,s)]] =>  [[ If(e, {s;While(e,s)}) ]]
+  // Env execute(Env env) {
+  //   Stmts block = new Stmts();
+  //   block.append(this.s).append(this);
+  //   Statement _if = new If(this.e, block);
+  //   _if.excute(env);
+  // }
+
+  Env execute(Env env) {
+    Value e = this.e.eval(env);
+    if (e instanceof BoolValue) {
+      if (((BoolValue)e).v) {
+        return this.execute(this.s.execute(env));
+      } else {
+        return env;
+      }
+    } else {
+      System.out.println("unexpected type of value : " + e);
+      return env;
+    }
+  }
+
+  public String toString() {
+    return "while (" + e.toString() + ") do\n" +
+      s.toString() + "od\n";
+  }
+
+  void print(int tab) {
+    Util.print_tab(tab);
+    System.out.println("while (" + e + ") do");
+    s.print(tab + 1);
+    Util.print_tab(tab);
+    System.out.println("od");
+  }
+}
+
 class Expression extends Node {
   Value eval(Env env) {
     return new NullValue();

@@ -27,6 +27,7 @@ stmt
   | 'print' aexp             # Print
   | 'if' bexp 'then' stmt    # If
   | 'skip'                   # Skip
+  | 'while' bexp 'do' stmts 'od' # While
   ;
 
 expr
