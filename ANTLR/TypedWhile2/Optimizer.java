@@ -15,6 +15,30 @@ class Optimizer {
 
   class Simplifier {
     // replace empty Stmts to Skip statement.
+    // - Expression 에서 항상 상수(IntValue, BoolValue)가 되는 계산식을 
+    //   계산된 상수값으로 치환하세요.
+    AstWithEval constant_folding(AstWithEval ast) {
+      ast.s = constant_folding_Stmt(ast.s);
+      return ast;
+    }
+
+    Statement constant_folding_Stmt(Statement s) {
+      return s;
+    }
+
+    Expression constant_folding_E(Expression e) {
+      return e;
+    }
+
+    Aexp constant_folding_AE(Aexp e) {
+      return e;
+    }
+
+    Bexp constant_folding_BE(Bexp e) {
+      return e;
+    }
+
+    // replace empty Stmts to Skip statement.
     // - Stmts 에서 Vector ss 가 비어있는 경우, Skip으로 대체합니다.
     AstWithEval remove_empty_blocks(AstWithEval ast) {
       ast.s = remove_empty_blocks_Stmt(ast.s);
