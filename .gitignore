@@ -47,3 +47,7 @@ ANTLR/TypedWhile2/WhileBaseVisitor.java
 ANTLR/TypedWhile2/WhileLexer.java
 ANTLR/TypedWhile2/WhileParser.java
 ANTLR/TypedWhile2/WhileVisitor.java
+ANTLR/FinalTerm/WhileBaseVisitor.java
+ANTLR/FinalTerm/WhileLexer.java
+ANTLR/FinalTerm/WhileParser.java
+ANTLR/FinalTerm/WhileVisitor.java
